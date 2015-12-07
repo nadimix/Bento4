@@ -174,7 +174,7 @@ AP4_CencCtrSubSampleEncrypter::GetSubSampleMap(AP4_DataBuffer&      sample_data,
                 skip = true;
             }
         }
-
+        /*
         if (skip) {
             // use cleartext regions to cover the entire NAL unit
             unsigned int range = nalu_size;
@@ -193,7 +193,12 @@ AP4_CencCtrSubSampleEncrypter::GetSubSampleMap(AP4_DataBuffer&      sample_data,
             AP4_ASSERT(cleartext_size >= m_NaluLengthSize);
             bytes_of_cleartext_data.Append(cleartext_size);
             bytes_of_encrypted_data.Append(encrypted_size);
-        }
+        }*/
+
+        // leaving 5 byte NAL headers (1 byte header + 4 bytes size) on the clear
+        // encrypting the rest
+        bytes_of_cleartext_data.Append(5);
+        bytes_of_encrypted_data.Append(nalu_size - 5);
                 
         // move the pointers
         in += nalu_size;
